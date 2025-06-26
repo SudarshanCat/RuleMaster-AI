@@ -1,0 +1,57 @@
+
+  /* Spinner for loading state (used in AI Insights section) */
+  .spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: -0.125em;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+  }
+  
+  /* --- Modal Styles --- */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure modal is on top */
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh; /* Limit height for smaller screens */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    transform: scale(0.95); /* Initial slightly smaller scale for animation */
+    animation: modalEnter 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Bounce effect */
+    border-top: 5px solid #6366f1; /* Accent border */
+  }
+  
+  @keyframes modalEnter {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* Basic responsiveness for modal on smaller screens */
+  @media (max-width: 640px) {
+    .modal-content {
+      padding: 1.5rem;
+    }
+  }
