@@ -1,0 +1,155 @@
+/* src/components/RuleList.css */
+@import 'tailwindcss'
+@tailwind base
+@tailwind components;
+@tailwind utilities;
+/*
+  Custom styles for the RuleList component that complement Tailwind CSS.
+  Focus on styles not easily achievable with Tailwind Utility classes,
+  such as custom animations or more complex pseudo-element styles.
+*/
+
+/* Add a subtle hover effect to the rule cards that lifts them slightly */
+.rule-card {
+ position: relative; /* Ensure the ::before pseudo-element is positioned relative to the card */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Existing transitions */
+  overflow: hidden; /* Ensure the pseudo-element stays within the rounded corners */
+}
+
+.rule-card:hover {
+  /* The lift effect is now handled by the transform on the element itself */
+  transform: translateY(-5px); /* Keep the translateY for the lifting effect */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind's shadow-lg */
+}
+
+/* Style for the rule description - add some text overflow handling if needed */
+.rule-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Add a custom focus style to the action buttons for accessibility and better UX */
+.rule-action-button:focus {
+  outline: 2px solid var(--color-blue-500); /* Use CSS variable for Tailwind blue-500 */
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Add a subtle glow effect on focus */
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Add a subtle layered effect on hover using a pseudo-element */
+.rule-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.15)); /* Subtle gradient background */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 0.5rem; /* Match Tailwind's rounded-lg */
+  z-index: 1; /* Place it above the card background but below content */
+  pointer-events: none; /* Ensure it doesn't interfere with mouse events on the card */
+}
+
+.rule-card:hover::before{
+  opacity: 0.15; /* Increase opacity on hover for the layered effect */
+}
+
+/* Ensure responsive image or icon scaling within the card if any are added */
+ .rule-icon {
+  max-width: 100%;
+ height: auto;
+}
+
+/* Apply the animation on hover */
+.rule-card:hover::before {
+  animation: expand-border 0.3s ease-out forwards;
+}
+
+/* Styles for the Rule List Table */
+.rule-table {
+  @apply w-full text-left border-collapse; /* Ensure borders are combined */
+}
+
+.rule-table th {
+  @apply p-4 text-sm font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 border-b border-gray-200;
+}
+
+.rule-table tbody tr {
+  @apply border-b border-gray-200 transition-colors duration-200 ease-in-out;
+}
+
+.rule-table tbody tr:hover {
+  @apply bg-gray-50;
+}
+
+.rule-table td {
+  @apply p-4 text-sm text-gray-700;
+}
+
+.rule-table td:last-child {
+  @apply text-center; /* Center the actions column */
+}
+
+
+
+/* Background animation for the page */
+ @keyframes animated-background {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+ background-position: 100% 50%;
+  }
+  100% {
+ background-position: 0% 50%;
+  }
+}
+
+body { /* Or a specific container element for the RuleList page */
+  background: linear-gradient(270deg, #eef2ff, #e0e7ff, #c7d2fe, #a5b4fc); /* A more vibrant, but still subtle gradient */
+  background-size: 400% 400%;
+  animation: animated-background 20s ease infinite; /* Slightly slower and more pronounced animation */
+}
+ 
+/* Ensure the background covers the full viewport height */
+html, body, #root { /* Adjust #root based on your root element ID */
+  min-height: 100vh;
+}
+
+/* Styles for the modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  backdrop-filter: blur(5px); /* Subtle blur effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it's on top of other content */
+  opacity: 0;
+  /* Added transform for a subtle scaling effect */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+}
+
+/* Styles for the modal content */
+.modal-content {
+  background-color: #ffffff; /* White background */
+  border-radius: 0.5rem; /* Rounded corners */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind's shadow-lg */
+  padding: 1.5rem; /* p-6 */
+  position: relative;
+  transform: scale(0.95);
+  transition: transform 0.3s ease-in-out;
+}

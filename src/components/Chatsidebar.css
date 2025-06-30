@@ -1,0 +1,30 @@
+/* ChatSidebar.module.css */
+@import 'tailwindcss';
+@tailwind base
+@tailwind components;
+@tailwind utilities;
+/* Outer container of the sidebar */
+.sidebarContainer {
+    @apply w-96 min-w-[24rem] max-w-[28rem] border-l border-gray-200 bg-white shadow-inner flex flex-col;
+  }
+  
+  /* Inner Copilot sidebar (full height) */
+  .sidebarInner {
+    @apply h-full overflow-y-auto px-4 py-6;
+  }
+  
+  /* Optional: Header area for branding or title */
+  .sidebarHeader {
+    @apply text-xl font-semibold text-gray-800 mb-4;
+  }
+  
+  /* Optional: Styling for Copilot messages or extra sections */
+  .sidebarContent {
+    @apply flex-1 text-sm text-gray-700 space-y-4;
+  }
+  
+  /* Optional: Footer or control buttons */
+  .sidebarFooter {
+    @apply mt-auto border-t pt-4 text-sm text-gray-500;
+  }
+  
