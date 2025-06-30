@@ -1,0 +1,69 @@
+/* src/components/UserManagement/Tenants.css */
+@import 'tailwindcss';
+@tailwind base
+@tailwind components;
+@tailwind utilities;
+.tenants-container {
+    padding: 1.5rem;
+}
+
+.tenants-form {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0; /* Neutral-200 */
+    border-radius: 0.5rem; /* rounded-lg */
+    background-color: #ffffff; /* bg-white */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+}
+
+.tenants-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600; /* font-semibold */
+    color: #2d3748; /* Gray-800 */
+}
+
+.tenants-form input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #cbd5e0; /* Neutral-300 */
+    border-radius: 0.25rem; /* rounded */
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.tenants-form button {
+    display: inline-block;
+    /* Tailwind classes will handle most button styles */
+}
+
+.tenants-table {
+    width: 100%;
+    border-collapse: collapse; /* border-collapse */
+    margin-top: 1.5rem;
+}
+
+.tenants-table th,
+.tenants-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0; /* Neutral-200 */
+}
+
+.tenants-table th {
+    background-color: #f8fafc; /* Slate-50 */
+    font-weight: 600; /* font-semibold */
+    color: #4a5568; /* Gray-700 */
+    text-transform: uppercase; /* uppercase */
+    font-size: 0.875rem; /* text-sm */
+}
+
+.tenants-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tenants-table tbody tr:hover {
+    background-color: #f0f4f8; /* Neutral-100 */
+}

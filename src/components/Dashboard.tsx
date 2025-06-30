@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Settings, Users, ClipboardList, TrendingUp, Bot, Lightbulb, Zap, BarChart2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
-import CreateUserModal from './Users/CreateUser'; // Assuming UserCreate.tsx is in the same directory
-// Global styles for dashboard
+import { Home, Settings, Users, ClipboardList, TrendingUp, Bot, Lightbulb, Zap, BarChart2, UserCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { KeycloakContext } from '../contexts/KeycloakContext';
+import { useContext } from 'react';
 
 // This component now holds the entire dashboard UI
 const DashboardPage: React.FC = () => {
   const [aiInsight, setAiInsight] = useState("AI is analyzing your rule performance trends...");
   const [loadingInsight, setLoadingInsight] = useState(false);
-  const [showCreateUserModal, setShowCreateUserModal] = useState(false);
-
+  const [numberOfRules, setNumberOfRules] = useState(0); // State for number of rules
+  const [numberOfUsers, setNumberOfUsers] = useState(0); // State for number of users
   const navigate = useNavigate(); // Initialize navigate hook
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
 
   // Simulate fetching AI insights
   useEffect(() => {
@@ -27,25 +29,40 @@ const DashboardPage: React.FC = () => {
         setLoadingInsight(false);
       }, 2000); // Simulate network delay
 
-      return () => clearTimeout(timer);
+      // Simulate fetching numbers for the cards
+      const numbersTimer = setTimeout(() => {
+        setNumberOfRules(15); // Placeholder number
+        setNumberOfUsers(50); // Placeholder number
+      }, 1000); // Simulate a slight delay after insights
+
+      // return () => clearTimeout(timer);
+      return () => { clearTimeout(timer); clearTimeout(numbersTimer); };
     }
   }, [loadingInsight]);
 
-  const refreshAiInsight = () => {
+  const { keycloak, initialized } = useContext(KeycloakContext);
+  const refreshAiInsight = async () => {
     setLoadingInsight(true);
-    setAiInsight("Fetching latest AI insights...");
+    // The useEffect hook will handle setting the new insight after loading is false
   };
+
 
   const handleCreateUserSuccess = () => {
     console.log("User creation process completed!");
   };
 
   const handleManageUsersClick = () => {
-    setShowCreateUserModal(true);
+    navigate('/user-management'); // Navigate to the new centralized user management screen
   };
 
   const handleAIPoweredRuleCreationClick = () => {
     navigate('/ai-rule-creation'); // Navigate to the new chatbot page
+  };
+  const handlRulesListClick = () => {
+    navigate('/rule-list'); // Navigate to the rule list page
+  };
+  const handleLogout = () => {
+    keycloak.logout();
   };
 
   return (
@@ -59,6 +76,39 @@ const DashboardPage: React.FC = () => {
           </div>
           <nav>
             <ul className="flex space-x-6">
+              {/* Profile Section */}
+              <li className="relative">
+                <button
+                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                  className="flex items-center text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out font-medium focus:outline-none"
+                >
+                  <UserCircle className="h-6 w-6 mr-1" />
+                  Profile
+                </button>
+                {showProfileDropdown && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                      <p className="font-semibold">Logged in as:</p>
+                      {initialized && keycloak.authenticated && keycloak.tokenParsed && (
+                        <p>{keycloak.tokenParsed.preferred_username || keycloak.tokenParsed.name || 'User'}</p>
+                      )}
+                    </div>
+                    {/* Add more user details here if available */}
+                    {/* You can access more details from keycloak.tokenParsed or keycloak.loadUserInfo() */}
+
+                    {/* Add more user details here if available */}
+                    <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </li>
+              {/* Add a basic Home link that goes to the root */}
+              <li>
+                <a href="/" className="text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out font-medium">
+                  Home
+                </a>
+              </li>
               <li>
                 <a href="#" className="text-gray-700 hover:text-indigo-600 transition duration-300 ease-in-out font-medium">Dashboard</a>
               </li>
@@ -152,14 +202,20 @@ const DashboardPage: React.FC = () => {
           </div>
 
           {/* Card 2: Predictive Analytics */}
-          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-emerald-400 hover:shadow-xl transition-shadow duration-300">
-            <BarChart2 className="text-emerald-500 h-16 w-16 mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Predictive Analytics</h3>
+          <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-emerald-400 hover:shadow-xl transition-shadow duration-300 relative">
+            <div className="absolute top-0 right-0 bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-bl-lg">Rules</div>
+            <ClipboardList className="text-emerald-500 h-16 w-16 mb-4" />
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Available Rules</h3>
+            <p className="text-gray-600 text-sm mb-4">
+              Total number of rules configured in the system.
+            </p>
+            <div className="text-4xl font-extrabold text-emerald-600 mb-4">{numberOfRules}</div> {/* Display number of rules */}
             <p className="text-gray-600 mb-4">
-              Anticipate future trends and potential issues with AI-driven predictive insights and reports.
+              View and manage the list of available rules.
             </p>
             <button className="text-emerald-600 hover:text-emerald-800 font-semibold flex items-center space-x-1">
-              <span>View Predictions</span>
+              
+              <span onClick={handlRulesListClick}>View Rule List</span>
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
@@ -199,9 +255,13 @@ const DashboardPage: React.FC = () => {
           {/* Card 5: Centralized User Management */}
           <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center border-t-4 border-blue-400 hover:shadow-xl transition-shadow duration-300">
             <Users className="text-blue-500 h-16 w-16 mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Centralized User Management</h3>
-            <p className="text-gray-600 mb-4">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Centralized User Management</h3>
+            <p className="text-gray-600 text-sm mb-4">
               Manage team access and permissions securely with granular control over AI features.
+            </p>
+            <div className="text-4xl font-extrabold text-blue-600 mb-4">1{numberOfUsers}</div> {/* Display number of users */}
+            <p className="text-gray-600 mb-4">
+              Total number of users in the system.
             </p>
             <button
               onClick={handleManageUsersClick}
@@ -211,6 +271,7 @@ const DashboardPage: React.FC = () => {
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
+
             </button>
           </div>
 
@@ -238,13 +299,6 @@ const DashboardPage: React.FC = () => {
         </div>
       </footer>
 
-      {/* Modals */}
-      {showCreateUserModal && (
-        <CreateUserModal
-          onClose={() => setShowCreateUserModal(false)}
-          onCreateUser={handleCreateUserSuccess}
-        />
-      )}
     </div>
   );
 };

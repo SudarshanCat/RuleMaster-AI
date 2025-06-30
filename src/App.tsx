@@ -1,30 +1,44 @@
 import React from 'react';
-// Import routing components from react-router-dom
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CopilotKit } from "@copilotkit/react-core";
+import ChatSidebar from "./components/Chatsidebar";
 
+import DashboardPage from './components/Dashboard';
+import ChatbotPage from './components/Chatbot/ChatbotPage';
+import CreateUser from './components/Users/CreateUser';
+import UserManagement from './components/UserManagement';
+import LandingPage from './components/LandingPage';
+import './index.css';
+import RuleList from './components/RuleList';
 
-// Import your page-level components
-import DashboardPage from './components/Dashboard'; // Contains the full dashboard UI and logic
-import ChatbotPage from './components/Chatbot/Chatbot';   // Contains the AI Rule Creation chatbot UI and logic
-import CreateUser from './components/Users/CreateUser'
-// Main App component responsible for overall application structure and routing
 const App: React.FC = () => {
   return (
-    <Router> {/* BrowserRouter sets up client-side routing */}
-      <Routes> {/* Routes defines the different paths in your application */}
-        {/* Route for the Dashboard - rendered at the root path "/" */}
-        <Route path="/" element={<DashboardPage />} />
-        {/* Route for the AI Rule Creation Chatbot - rendered at "/ai-rule-creation" */}
-        <Route path="/ai-rule-creation" element={<ChatbotPage />} />
-        <Route path="/user-creation" element={<CreateUser onClose={function (): void {
-          throw new Error('Function not implemented.');
-        } } onCreateUser={function (): void {
-          throw new Error('Function not implemented.');
-        } } />} />
-        {/* You can add more routes here for other pages */}
-        {/* Example: <Route path="/reports" element={<ReportsPage />} /> */}
-      </Routes>
-    </Router>
+    <CopilotKit publicApiKey='ck_pub_d1edf1755e69761ed66de296b0d252a1'> {/* ✅ CopilotKit wraps Router, not inside Routes */}
+      <Router>
+        <div className="flex min-h-screen">
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/ai-rule-creation" element={<ChatbotPage />} />
+              <Route path="/user-management" element={<UserManagement />} />
+              <Route path="/rule-list" element={<RuleList />} />
+
+              <Route
+                path="/user-creation"
+                element={
+                  <CreateUser
+                    onClose={() => {}}
+                    onCreateUser={() => {}}
+                  />
+                }
+              />
+            </Routes>
+          </div>
+          <ChatSidebar /> 
+        </div>
+      </Router>
+    </CopilotKit>
   );
 };
 

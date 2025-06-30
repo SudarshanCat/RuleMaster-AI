@@ -1,0 +1,57 @@
+/* src/components/UserManagement.css */
+@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.user-management-container {
+  padding: 20px;
+}
+
+.tabs {
+ display: flex;
+ border-bottom: 2px solid #e2e8f0; /* Tailwind gray-200 */
+  margin-bottom: 20px;
+  overflow-x: auto; /* Allow horizontal scrolling if tabs exceed container width */
+}
+
+.tab-button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
+  outline: none;
+  font-size: 1rem; /* Equivalent to Tailwind text-base */
+  color: #4a5568; /* Tailwind gray-700 */
+  transition: color 0.3s ease, border-color 0.3s ease;
+  white-space: nowrap; /* Prevent tabs from wrapping */
+}
+
+.tab-button:hover {
+  color: #2b6cb0; /* Tailwind blue-700 */
+  border-bottom-color: #2b6cb0;
+}
+
+.tab-button.active {
+  border-bottom: 2px solid #007bff;
+  border-color: #3182ce; /* Tailwind blue-600 */
+  color: #3182ce; /* Tailwind blue-600 */
+  font-weight: bold;
+}
+
+/* Added transition for smoother tab content display */
+.tab-content {
+  padding: 20px;
+  border: 1px solid #e2e8f0; /* Tailwind gray-200 */
+  border-top: none;
+  background-color: #ffffff; /* Tailwind white */
+  border-radius: 0 0 8px 8px; /* Rounded corners at the bottom */
+}
+
+.tab-content {
+  padding: 20px;
+  border: 1px solid #e2e8f0; /* Tailwind gray-200 */
+  border-top: none;
+  background-color: #ffffff; /* Tailwind white */
+  border-radius: 0 0 8px 8px; /* Rounded corners at the bottom */
+}
